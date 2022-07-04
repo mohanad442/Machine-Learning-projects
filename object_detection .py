@@ -71,41 +71,14 @@ while True:
 
   ret, img = video.read()
 
-  class_label, probabilty, boxes = model.detect(img, confThreshold = 0.5)
-
-  if (len(class_label) != 0):
-    for label, prob, box in zip(class_label, probabilty,boxes):
-      cv2.rectangle(img, box, (255,0,0), 3)
-      cv2.putText(img, labels[label-1],( box[0]+10 , box[1] + 40) , font , font_scale, color = (0,0,255) , thickness  = 2)
-  plt.imshow(img)
-  if cv2.waitKey(1) & 0xFF == ord('q'):
-    break
-
+  class_label, probabilty, boxes = model.detect(img, confThreshold = 0.6)
+      if (len(class_label) != 0):
+        for label, prob, box in zip(class_label, probabilty,boxes):
+            if label <= 80 :
+              cv2.rectangle(img, box, (255,0,0), 3)
+              cv2.putText(img, labels[label-1],( box[0]+10 , box[1] + 40) , font , font_scale, color = (0,0,255) , thickness  = 2)
+      cv2.imshow(\"Video\" , img)
+      if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 video.release()
 cv2.destroyAllWindows()
-
-# Commented out IPython magic to ensure Python compatibility.
-!git clone https://github.com/pardeep-kesnani1234/Crash_Course_Media.git
-
-# %cd "Crash_Course_Media"
-
-cv2.imshow("img" , img3)
-
-from google.colab.patches import cv2_imshow
-# Download sample video
-!curl -o sample.mp4 https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4
-
-cap = cv2.VideoCapture('sample.mp4')
-while cap.isOpened():
-    ret, image = cap.read()
-
-    if not ret:
-      break
-
-    cv2_imshow(image) # Note cv2_imshow, not cv2.imshow
-
-    cv2.waitKey(1) & 0xff
-
-cv2.destroyAllWindows()
-cap.release()
-
